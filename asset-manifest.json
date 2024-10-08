@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/omeletaz/static/css/main.4d4409b8.css",
+    "main.js": "/omeletaz/static/js/main.29ffba2b.js",
+    "index.html": "/omeletaz/index.html",
+    "main.4d4409b8.css.map": "/omeletaz/static/css/main.4d4409b8.css.map",
+    "main.29ffba2b.js.map": "/omeletaz/static/js/main.29ffba2b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4d4409b8.css",
+    "static/js/main.29ffba2b.js"
+  ]
+}
