@@ -24,7 +24,9 @@ Before you begin, ensure you have the following installed:
 - npm (comes with Node.js)
 
 ## Getting Started
+To start the Project you can visit [The OmeleTaz Website](https://y-juice.github.io/omeletaz/)
 
+Or run it locally by following these steps:
 1. **Clone the Repository**
 
    ```bash
