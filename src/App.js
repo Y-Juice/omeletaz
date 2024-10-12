@@ -1,6 +1,10 @@
+import style from "./App.css";
+
 import React, { useEffect, useState, useRef } from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, updateDoc, addDoc } from "firebase/firestore";
+import copyIcon from "./icons/copy.png";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyBzM9MXxjIWZE87TrltYF2wcohrrBakcCk",
@@ -142,6 +146,8 @@ const App = () => {
       <button onClick={createCall}>Call</button>
       <h2>Join a Call</h2>
       <input ref={callInputRef} />
+
+      <button id="copyBtn" onClick={answerCall}><img src={copyIcon}/></button>
       <button onClick={answerCall}>Answer</button>
     </>
   );
