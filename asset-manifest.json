@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/omeletaz/static/css/main.51e2092a.css",
-    "main.js": "/omeletaz/static/js/main.2c46b836.js",
+    "main.css": "/omeletaz/static/css/main.4a87d2ad.css",
+    "main.js": "/omeletaz/static/js/main.cd4ee983.js",
     "index.html": "/omeletaz/index.html",
-    "main.51e2092a.css.map": "/omeletaz/static/css/main.51e2092a.css.map",
-    "main.2c46b836.js.map": "/omeletaz/static/js/main.2c46b836.js.map"
+    "main.4a87d2ad.css.map": "/omeletaz/static/css/main.4a87d2ad.css.map",
+    "main.cd4ee983.js.map": "/omeletaz/static/js/main.cd4ee983.js.map"
   },
   "entrypoints": [
-    "static/css/main.51e2092a.css",
-    "static/js/main.2c46b836.js"
+    "static/css/main.4a87d2ad.css",
+    "static/js/main.cd4ee983.js"
   ]
 }
