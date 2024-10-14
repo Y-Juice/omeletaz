@@ -1,5 +1,4 @@
 import "./App.css";
-
 import React, { useEffect, useState, useRef } from "react";
 import { initializeApp } from "firebase/app";
 import {
@@ -30,30 +29,31 @@ const firestore = getFirestore(app);
 const App = () => {
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream] = useState(new MediaStream());
-
   const webcamVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
   const callInputRef = useRef(null);
-  const pc = useRef(null); // Initialize as null
+  const pc = useRef(null);
 
   useEffect(() => {
     return () => {
       if (pc.current) {
-        pc.current.close(); // Clean up the peer connection on unmount
+        pc.current.close();
       }
     };
   }, []);
 
   const startWebcam = async () => {
     if (pc.current) {
-      // If pc already exists, reset it
       pc.current.close();
     }
 
     pc.current = new RTCPeerConnection({
       iceServers: [
         {
-          urls: ["stun:stun.l.google.com:19302", "stun:stun.l.google.com:5349"],
+          urls: [
+            "stun:stun.l.google.com:19302",
+            "stun:stun1.l.google.com:19302",
+          ],
         },
       ],
     });
@@ -62,6 +62,7 @@ const App = () => {
       video: true,
       audio: true,
     });
+
     setLocalStream(stream);
     webcamVideoRef.current.srcObject = stream;
 
@@ -69,19 +70,21 @@ const App = () => {
       pc.current.addTrack(track, stream);
     });
 
-    remoteVideoRef.current.srcObject = remoteStream;
-
     pc.current.ontrack = (event) => {
       event.streams[0].getTracks().forEach((track) => {
         remoteStream.addTrack(track);
       });
     };
+
+    remoteVideoRef.current.srcObject = remoteStream;
   };
 
   const createCall = async () => {
-    const callDocRef = doc(collection(firestore, "calls")); // Create a document reference
+    const callDocRef = doc(collection(firestore, "calls"));
     const offerCandidates = collection(callDocRef, "offerCandidates");
     const answerCandidates = collection(callDocRef, "answerCandidates");
+
+    await startWebcam();
 
     callInputRef.current.value = callDocRef.id;
 
@@ -93,8 +96,12 @@ const App = () => {
 
     const offerDescription = await pc.current.createOffer();
     await pc.current.setLocalDescription(offerDescription);
+
     await setDoc(callDocRef, {
-      offer: { sdp: offerDescription.sdp, type: offerDescription.type },
+      offer: {
+        sdp: offerDescription.sdp,
+        type: offerDescription.type,
+      },
     });
 
     onSnapshot(callDocRef, (snapshot) => {
@@ -117,9 +124,11 @@ const App = () => {
 
   const answerCall = async () => {
     const callId = callInputRef.current.value;
-    const callDocRef = doc(firestore, "calls", callId); // Access the document directly
+    const callDocRef = doc(firestore, "calls", callId);
     const answerCandidates = collection(callDocRef, "answerCandidates");
     const offerCandidates = collection(callDocRef, "offerCandidates");
+
+    await startWebcam();
 
     pc.current.onicecandidate = (event) => {
       if (event.candidate) {
@@ -127,7 +136,7 @@ const App = () => {
       }
     };
 
-    const callData = (await getDoc(callDocRef)).data(); // Get the call document data
+    const callData = (await getDoc(callDocRef)).data();
     const offerDescription = callData.offer;
 
     await pc.current.setRemoteDescription(
@@ -137,33 +146,28 @@ const App = () => {
     await pc.current.setLocalDescription(answerDescription);
 
     await updateDoc(callDocRef, {
-      answer: { type: answerDescription.type, sdp: answerDescription.sdp },
+      answer: {
+        type: answerDescription.type,
+        sdp: answerDescription.sdp,
+      },
     });
 
     onSnapshot(offerCandidates, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
-          const data = change.doc.data();
-          pc.current.addIceCandidate(new RTCIceCandidate(data));
+          const candidate = new RTCIceCandidate(change.doc.data());
+          pc.current.addIceCandidate(candidate);
         }
       });
     });
   };
 
-  function copyText() {
-    // Get the text field
-    var copyText = document.getElementById("callID");
-
-    // Select the text field
+  const copyText = () => {
+    const copyText = document.getElementById("callID");
     copyText.select();
-    copyText.setSelectionRange(0, 99999); // For mobile devices
-
-    // Copy the text inside the text field
+    copyText.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(copyText.value);
-
-    // Alert the copied text
-    alert("Copied the text: " + copyText.value);
-  }
+  };
 
   return (
     <>
@@ -175,24 +179,29 @@ const App = () => {
         <video ref={webcamVideoRef} autoPlay playsInline></video>
         <video ref={remoteVideoRef} autoPlay playsInline></video>
       </div>
-      <button onClick={startWebcam}>Start Webcam</button>
-      <div className="buttonsHorizontal">
-        <h2>Create a new call</h2>
-        <button onClick={createCall}>Call</button>
-      </div>
-
-      <div className="buttonsHorizontal">
-        <h2>Join a Call</h2>
-        <div className="answerCopyWrapper">
-        <input id="callID" ref={callInputRef} placeholder="Input here the call ID of your friend..." />
-          <div className="tooltip">
-            <h3 className="tooltiptext">Copy CallID</h3>
-
-            <button id="copyBtn" onClick={copyText}>
-              <img src={copyIcon} />
-            </button>
+      <div className="buttonsWrapper">
+        <div className="buttonsHorizontal">
+          <h2>Create a new call</h2>
+          <button onClick={createCall}>Start Call</button>
+        </div>
+        <div className="buttonsHorizontal">
+          <h2>Join a Call</h2>
+          <div className="answerCopyWrapper">
+            <input
+              id="callID"
+              ref={callInputRef}
+              placeholder="Input here the call ID of your friend..."
+            />
+            <div className="tooltip">
+              <h3 className="tooltiptext" id="tooltipTextID">
+                Copy Call ID
+              </h3>
+              <button id="copyBtn" onClick={copyText}>
+                <img src={copyIcon} alt="Copy" />
+              </button>
+            </div>
+            <button onClick={answerCall}>Join</button>
           </div>
-          <button onClick={answerCall}>Answer</button>
         </div>
       </div>
     </>
