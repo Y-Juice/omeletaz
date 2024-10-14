@@ -55,13 +55,16 @@ Or run it locally by following these steps:
 
 ## Usage
 
-- Click the **"Start Webcam"** button to initiate your webcam stream.
-- Use the **"Call"** button to create a new call and copy the call ID.
-- Paste the call ID in the input field to join an existing call, and click the **"Answer"** button.
+- Click the **"Call"** button to initiate your webcam stream and create a call.
+  
+- Paste the call ID in the input field to join an existing call, and click the **"Join"** button.
 
 
-## Acknowledgments
+## Sources
 
 - [React](https://reactjs.org/) - The library used for building the UI.
 - [Firebase](https://firebase.google.com/) - For backend services.
 - [WebRTC](https://webrtc.org/) - For real-time communication.
+- [w3schools tooltips](https://www.w3schools.com/howto/howto_css_tooltip.asp) - For tooltip on copy CallID button.
+- [Fireship WebRTC tutorial](https://youtu.be/WmR9IMUD_CY?si=WCsfB94yIND0UyWz) - for videochat App functionality
+- [Fireship websocket explanation](https://youtu.be/1BfCnjr_Vjg?si=eMG37LW54k9EWhrU) - for websocket explanation.
