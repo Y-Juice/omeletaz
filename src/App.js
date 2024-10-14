@@ -176,7 +176,7 @@ const App = () => {
         <h3>Just one call away.</h3>
       </header>
       <div className="videos">
-        <video ref={webcamVideoRef} autoPlay playsInline></video>
+        <video ref={webcamVideoRef} autoPlay playsInline id="localCam"></video>
         <video ref={remoteVideoRef} autoPlay playsInline></video>
       </div>
       <div className="buttonsWrapper">
@@ -190,7 +190,7 @@ const App = () => {
             <input
               id="callID"
               ref={callInputRef}
-              placeholder="Input here the call ID of your friend..."
+              placeholder="Input friend's call ID here..."
             />
             <div className="tooltip">
               <h3 className="tooltiptext" id="tooltipTextID">

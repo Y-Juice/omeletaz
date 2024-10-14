@@ -4,7 +4,7 @@
   --primary: #503047;
   --secondaryLight: #e8f4fc;
   --secondaryDark: #adc698;
-  --tertiary: #c05746;
+  --tertiary: #2f1c2a;
   --borderColor: #d0e1ec;
 }
 
@@ -156,7 +156,7 @@ header h3 {
   margin: 0;
   font-weight: 200;
   font-size: 18px;
-  margin-bottom: 1%;
+  margin-bottom: 0%;
   margin-top: auto;
   vertical-align: bottom;
   margin-left: 0.5%;
@@ -195,3 +195,57 @@ width: 70%;
 color: var(--primary);
 }
 
+@media only screen and (max-width:426px) {
+.buttonsWrapper {
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#callID {
+  width: 100%;
+  font-size: 15px;
+}
+
+button {
+  width: 150px;
+}
+
+
+  .videos {
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+
+  video {
+    width: 90%;
+    padding: 0;
+    object-fit: cover;
+
+  }
+
+  #localCam {
+    position: absolute;
+    left: auto;
+    right: 10%;
+    width: 20%;
+    height: 20%;
+
+    border-color: var(--tertiary);
+    border-style: solid;
+    border-width: 2px;
+    background-color: var(--primary);
+  } 
+
+h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.buttonsHorizontal {
+  width: 90%;
+}
+
+}
