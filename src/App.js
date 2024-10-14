@@ -1,10 +1,18 @@
-import style from "./App.css";
+import "./App.css";
 
 import React, { useEffect, useState, useRef } from "react";
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, updateDoc, addDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  onSnapshot,
+  updateDoc,
+  addDoc,
+} from "firebase/firestore";
 import copyIcon from "./icons/copy.png";
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyBzM9MXxjIWZE87TrltYF2wcohrrBakcCk",
@@ -50,7 +58,10 @@ const App = () => {
       ],
     });
 
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
     setLocalStream(stream);
     webcamVideoRef.current.srcObject = stream;
 
@@ -82,7 +93,9 @@ const App = () => {
 
     const offerDescription = await pc.current.createOffer();
     await pc.current.setLocalDescription(offerDescription);
-    await setDoc(callDocRef, { offer: { sdp: offerDescription.sdp, type: offerDescription.type } });
+    await setDoc(callDocRef, {
+      offer: { sdp: offerDescription.sdp, type: offerDescription.type },
+    });
 
     onSnapshot(callDocRef, (snapshot) => {
       const data = snapshot.data();
@@ -117,11 +130,15 @@ const App = () => {
     const callData = (await getDoc(callDocRef)).data(); // Get the call document data
     const offerDescription = callData.offer;
 
-    await pc.current.setRemoteDescription(new RTCSessionDescription(offerDescription));
+    await pc.current.setRemoteDescription(
+      new RTCSessionDescription(offerDescription)
+    );
     const answerDescription = await pc.current.createAnswer();
     await pc.current.setLocalDescription(answerDescription);
 
-    await updateDoc(callDocRef, { answer: { type: answerDescription.type, sdp: answerDescription.sdp } });
+    await updateDoc(callDocRef, {
+      answer: { type: answerDescription.type, sdp: answerDescription.sdp },
+    });
 
     onSnapshot(offerCandidates, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
@@ -133,22 +150,51 @@ const App = () => {
     });
   };
 
+  function copyText() {
+    // Get the text field
+    var copyText = document.getElementById("callID");
+
+    // Select the text field
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // For mobile devices
+
+    // Copy the text inside the text field
+    navigator.clipboard.writeText(copyText.value);
+
+    // Alert the copied text
+    alert("Copied the text: " + copyText.value);
+  }
+
   return (
     <>
-      <h1>OmeleTaz</h1>
-      <h3>Your Favorite ChatApp</h3>
+      <header>
+        <h1>OmeleTaz</h1>
+        <h3>Just one call away.</h3>
+      </header>
       <div className="videos">
         <video ref={webcamVideoRef} autoPlay playsInline></video>
         <video ref={remoteVideoRef} autoPlay playsInline></video>
       </div>
       <button onClick={startWebcam}>Start Webcam</button>
-      <h2>Create a new call</h2>
-      <button onClick={createCall}>Call</button>
-      <h2>Join a Call</h2>
-      <input ref={callInputRef} />
+      <div className="buttonsHorizontal">
+        <h2>Create a new call</h2>
+        <button onClick={createCall}>Call</button>
+      </div>
 
-      <button id="copyBtn" onClick={answerCall}><img src={copyIcon}/></button>
-      <button onClick={answerCall}>Answer</button>
+      <div className="buttonsHorizontal">
+        <h2>Join a Call</h2>
+        <div className="answerCopyWrapper">
+        <input id="callID" ref={callInputRef} placeholder="Input here the call ID of your friend..." />
+          <div className="tooltip">
+            <h3 className="tooltiptext">Copy CallID</h3>
+
+            <button id="copyBtn" onClick={copyText}>
+              <img src={copyIcon} />
+            </button>
+          </div>
+          <button onClick={answerCall}>Answer</button>
+        </div>
+      </div>
     </>
   );
 };

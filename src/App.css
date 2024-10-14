@@ -2,29 +2,29 @@
 
 :root {
   --primary: #503047;
-  --secondaryLight: #d0e3c4;
+  --secondaryLight: #e8f4fc;
   --secondaryDark: #adc698;
   --tertiary: #c05746;
+  --borderColor: #d0e1ec;
 }
 
 body {
   font-family: "Kanit", sans-serif;
   font-weight: 400;
   font-style: normal;
-  background-color: #adc698;
+  background-color: #fff;
 }
 
 button {
   font-family: "Kanit", sans-serif;
   font-weight: 400;
-  background-color: ;
   height: 40px;
   width: fit-content;
 }
 
 #copyBtn {
   width: 40px;
-  height: 40px;
+  height: 50px;
 }
 
 #copyBtn img {
@@ -43,12 +43,136 @@ button {
 }
 
 video {
-  background-color: var(--primary);
+  background-color: var(--secondaryLight);
   margin: 0%;
   height: 350px;
   width: 40%;
 
   padding: 0% 2%;
-  border-radius: 15px;
+  border-radius: 5px;
   padding-bottom: 10%;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 140px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -75px;
+  opacity: 0;
+  font-weight: 500;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 0.9;
+}
+
+h1 {
+}
+
+.buttonsHorizontal {
+  margin-bottom: 5%;
+  display: flex;
+  flex-direction: row;
+  height: 10%;
+  width: 50%;
+
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  vertical-align: middle;
+  width: fit-content;
+  height: 50px;
+  padding: 2% 5%;
+  font-size: 20px;
+  align-content: center;
+  border-radius: 5px;
+  border-color: var(--borderColor);
+  border-width: 2px;
+  background-color: #fff;
+  border-style: solid;
+}
+
+.answerCopyWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+header {
+  width: 90%;
+  background-color:#fff ;
+  color: var(--secondaryDark);
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding: 1% 5%;
+  text-align: center;
+}
+
+header h1 {
+  font-weight: 600;
+  margin: 0;
+  font-size: 50px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+header h3 {
+  margin: 0;
+  font-weight: 200;
+  font-size: 18px;
+  margin-bottom: 0.8%;
+  margin-top: auto;
+  vertical-align: bottom;
+  margin-left: 0.5%;
+}
+
+#callID {
+  height: 45px;
+  border-color: var(--borderColor);
+  border-style: solid;
+  width: 400px;
+border-radius: 5px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0% 2%;
+  font-size: 18px;
+  align-content: center;
 }
